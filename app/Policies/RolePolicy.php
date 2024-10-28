@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Category;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Spatie\Permission\Models\Role;
 
-class CategoryPolicy
+class RolePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,9 +19,9 @@ class CategoryPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Category $category): bool
+    public function view(User $user, Role $role): bool
     {
-        return $user->isAdmin();
+        return $user->isAdmin() || $user->isEditor();
     }
 
     /**
@@ -29,13 +29,13 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAdmin() || $user->isEditor();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Role $role): bool
     {
         return $user->isAdmin();
     }
@@ -43,7 +43,7 @@ class CategoryPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): bool
+    public function delete(User $user, Role $role): bool
     {
         return $user->isAdmin();
     }
@@ -51,7 +51,7 @@ class CategoryPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user): bool
+    public function restore(User $user, Role $role): bool
     {
         return $user->isAdmin();
     }
@@ -59,31 +59,7 @@ class CategoryPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function deleteAny(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function restoreAny(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(User $user, Role $role): bool
     {
         return $user->isAdmin();
     }

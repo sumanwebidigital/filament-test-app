@@ -26,4 +26,14 @@ class EditUser extends EditRecord
            UserStatsWidget::class,
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'User updated';
+    }
 }

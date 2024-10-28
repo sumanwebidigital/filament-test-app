@@ -14,9 +14,9 @@ class UserStatsWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Name', $this->record->name),
-            Stat::make('Posts', $this->record->posts()->count()),
-            Stat::make('Comments', $this->record->comments()->count()),
+           // Stat::make('Name', $this->record->name),
+           // Stat::make('Posts', $this->record->posts()->count() ?? 0),
+           // Stat::make('Comments', $this->record->comments()->count() ?? 0),
         ];
     }
 }

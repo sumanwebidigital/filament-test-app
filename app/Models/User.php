@@ -10,29 +10,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasRoles;
 
-    const ROLE_ADMIN = 'ADMIN';
-    const ROLE_EDITOR = 'EDITOR';
-    const ROLE_USER = 'USER';
+    //https://spatie.be/docs/laravel-permission/v6/installation-laravel
+    ////https://filamentphp.com/docs/3.x/panels/resources/editing-records
+
+    const ROLE_ADMIN = 'Admin';
+    const ROLE_EDITOR = 'Writer';
+    const ROLE_USER = 'User';
     const ROLE_DEFAULT = self::ROLE_USER;
 
     public function canAccessPanel(Panel $panel): bool {
-       // return $this->can('view-admin', User::class);
-    //    dd("Here");
-    //    return $this->role === self::ROLE_EDITOR;
-       return true;
+        // return $this->hasRole(self::ROLE_ADMIN)
+        //         || $this->hasRole(self::ROLE_EDITOR);
+
+        return true;
     }
 
     public function isAdmin(){
-        return $this->role === self::ROLE_ADMIN;
+        return $this->hasRole(self::ROLE_ADMIN);
     }
 
     public function isEditor(){
-        return $this->role === self::ROLE_EDITOR;
+        return $this->hasRole(self::ROLE_EDITOR);
     }
 
     /**

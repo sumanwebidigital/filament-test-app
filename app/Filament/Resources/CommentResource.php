@@ -25,11 +25,11 @@ class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?string $modelLabel = 'Comments';
+    // protected static ?string $modelLabel = 'Comments';
 
     protected static ?string $navigationGroup = 'User';
 
-    protected static ?string $navigationParentItem = 'Users';
+    // protected static ?string $navigationParentItem = 'Users';
 
     protected static ?int $navigationSort = 2;
 
