@@ -31,12 +31,15 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationGroup = 'Blog';
+    protected static ?string $modelLabel = 'Products';
+
+    protected static ?string $navigationGroup = 'Product';
 
     protected static ?int $navigationSort = 1;
 
@@ -61,6 +64,10 @@ class PostResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
+                        // Select::make('location_id')
+                        //     ->relationship('location', 'name')
+                        //     ->searchable()
+                        //     ->preload(),
                         ColorPicker::make('color')->required(),
                     ]),
                     Tab::make('Content')
@@ -83,56 +90,43 @@ class PostResource extends Resource
                             TagsInput::make('tags')->required(),
                             Toggle::make('published'),
                         ]),
+
+                        Section::make('Gallery')
+                            ->collapsible()
+                            ->schema([
+                                FileUpload::make('attachments')
+                                    ->multiple()
+                                    ->panelLayout('grid')
+                                    ->directory('uploads/gallery')
+                                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                                        return (string) str()->uuid() . '.' . $file->getClientOriginalExtension();
+                                    })
+                                    ->storeFileNamesIn('attachments.file_path') // stores file path in the attachments table
+                                    ->saveRelationshipsUsing(function ($component, $record, $state) {
+                                        // Clear existing attachments to avoid duplicates
+                                        $record->attachments()->delete();
+
+                                        // Save new attachments
+                                        foreach ($state as $path) {
+                                            $record->attachments()->create(['file_path' => $path]);
+                                        }
+                                    })
+                                    ->deleteUploadedFileUsing(function ($file) {
+                                        Storage::disk('public')->delete($file);
+                                    })
+                                    ->afterStateHydrated(function ($component, $state) {
+                                        // Load existing file paths when in edit mode
+                                        $record = $component->getRecord();
+                                        if ($record && $record->attachments) {
+                                            $component->state($record->attachments->pluck('file_path')->toArray());
+                                        }
+                                    })
+                                ]),
                     ]),
                 ])->columnSpanFull()
                 //->activeTab(1)
                 ->persistTabInQueryString(),
 
-
-                
-
-                // Section::make('Create a Post')
-                //     ->description('This is blog post.')
-                //     ->collapsible()
-                //     ->schema([
-                //         // Group::make()->schema([
-                //         //     TextInput::make('title')->rules(['min:3', 'max:5'])->required(),
-                //         //     TextInput::make('slug')->required(),
-                //         // ]),
-                        
-                //         // Group::make()->schema([
-                //         //     Select::make('category_id')
-                //         //         ->label('Category')
-                //         //         //->options(Category::all()->pluck('name', 'id')),
-                //         //         ->relationship('category', 'name')
-                //         //         ->searchable()
-                //         //         ->required(),
-                //         //     ColorPicker::make('color')->required(),
-                //         // ]),
-        
-                //         MarkdownEditor::make('content')->required()->columnSpan('full'),
-                //     ])->columnSpan(2)->columns(2),
-                
-                // Group::make()->schema([
-                //     Section::make('Image')
-                //         ->collapsible()
-                //         ->schema([
-                //             FileUpload::make('thumbnail')
-                //                 ->disk('public')
-                //                 ->directory('thumbnails')->columnSpanFull(),
-                //         ])->columnSpan(1),
-                    
-                //     Section::make('Meta')->schema([
-                //         TagsInput::make('tags')->required(),
-                //         Toggle::make('published'),
-                //     ]),
-                //     // Section::make('Authors')->schema([
-                //     //     Select::make('authors')
-                //     //         ->label('Co Authors')
-                //     //         ->multiple()
-                //     //         ->relationship('authors', 'name'),
-                //     // ]),
-                // ]),
             ])->columns(3);
             // ->columns([
             //     'default' => 1,
@@ -162,11 +156,16 @@ class PostResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
-                SelectColumn::make('category.name')
+                TextColumn::make('category.name')
                     ->label('Category')
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
+                // TextColumn::make('location.name')
+                //     ->label('Location')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->toggleable(),
                 TagsColumn::make('tags')
                     ->toggleable(),
                 ToggleColumn::make('published')

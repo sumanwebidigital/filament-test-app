@@ -18,7 +18,7 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationGroup = 'Roles & Permissions';
+    protected static ?string $navigationGroup = 'Roles & Permission';
 
     protected static ?int $navigationSort = 1;
 

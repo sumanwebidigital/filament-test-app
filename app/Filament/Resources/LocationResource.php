@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PermissionResource\Pages;
+use App\Filament\Resources\LocationResource\Pages;
+use App\Filament\Resources\LocationResource\RelationManagers;
+use App\Models\Location;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
@@ -13,17 +15,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\Permission\Models\Permission;
 
-class PermissionResource extends Resource
+class LocationResource extends Resource
 {
-    protected static ?string $model = Permission::class;
+    protected static ?string $model = Location::class;
 
-    protected static ?string $navigationGroup = 'Roles & Permission';
+    protected static ?string $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 
     public static function form(Form $form): Form
     {
@@ -31,10 +32,12 @@ class PermissionResource extends Resource
             ->schema([
                 Card::make()->schema([
                     TextInput::make('name')
-                    ->minLength(2)
-                    ->maxLength(255)
-                    ->required()
-                    ->unique(ignoreRecord: true),
+                        ->minLength(2)
+                        ->maxLength(255)
+                        ->required()
+                        ->unique(ignoreRecord: true),
+                    TextInput::make('latitude'),
+                    TextInput::make('longitude'),
                 ]),
             ]);
     }
@@ -45,6 +48,8 @@ class PermissionResource extends Resource
             ->columns([
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('name'),
+                TextColumn::make('latitude'),
+                TextColumn::make('longitude'),
                 TextColumn::make('created_at'),
                 TextColumn::make('updated_at'),
             ])
@@ -53,7 +58,7 @@ class PermissionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -72,9 +77,9 @@ class PermissionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPermissions::route('/'),
-            'create' => Pages\CreatePermission::route('/create'),
-            'edit' => Pages\EditPermission::route('/{record}/edit'),
+            'index' => Pages\ListLocations::route('/'),
+            'create' => Pages\CreateLocation::route('/create'),
+            'edit' => Pages\EditLocation::route('/{record}/edit'),
         ];
     }
 }

@@ -26,7 +26,7 @@ class UserResource extends Resource
 
     // protected static ?string $modelLabel = 'Users';
 
-    protected static ?string $navigationGroup = 'User';
+    protected static ?string $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 1;
 

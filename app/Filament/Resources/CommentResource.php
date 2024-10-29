@@ -27,11 +27,11 @@ class CommentResource extends Resource
 
     // protected static ?string $modelLabel = 'Comments';
 
-    protected static ?string $navigationGroup = 'User';
+    protected static ?string $navigationGroup = 'Review & Rating';
 
     // protected static ?string $navigationParentItem = 'Users';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -72,6 +72,7 @@ class CommentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->headerActions([
                 ExportAction::make()->exporter(CommentExporter::class),

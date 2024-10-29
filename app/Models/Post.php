@@ -24,6 +24,10 @@ class Post extends Model
         'published',
     ];
 
+    public function location(){
+        return $this->belongsTo(Location::class);
+    }
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
@@ -36,5 +40,9 @@ class Post extends Model
 
     public function comments(){
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function attachments(){
+        return $this->hasMany(Attachment::class);
     }
 }
