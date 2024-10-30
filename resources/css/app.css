@@ -1,0 +1,10 @@
+.horizontal-checkboxes .filament-forms-checkbox-list-component {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Adjust spacing as needed */
+}
+
+.horizontal-checkboxes .filament-forms-checkbox-list-component label {
+    display: flex;
+    align-items: center;
+}

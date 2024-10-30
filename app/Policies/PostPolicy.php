@@ -41,12 +41,13 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        if($user->isAdmin() || $user->isEditor() || $user->isUser()){
-            if($user->hasPermissionTo('Create Post')){
-                return true;
-            }  
-        }
-        return false;
+        // if($user->isAdmin() || $user->isEditor() || $user->isUser()){
+        //     if($user->hasPermissionTo('Create Post')){
+        //         return true;
+        //     }  
+        // }
+        // return false;
+        return $user->isAdmin() || $user->isEditor() || $user->isUser();
     }
 
     /**
@@ -54,16 +55,17 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        if($user->isAdmin() || $user->isEditor() || $user->isUser()){
-            if($user->hasPermissionTo('Edit Post')){
+        // if($user->isAdmin() || $user->isEditor() || $user->isUser()){
+        //     if($user->hasPermissionTo('Edit Post')){
 
-                // $post = Post::with('authors')->find($post->id);
-                // dd($post);
+        //         // $post = Post::with('authors')->find($post->id);
+        //         // dd($post);
 
-                return true;
-            }  
-        }
-        return false;
+        //         return true;
+        //     }  
+        // }
+        // return false;
+        return $user->isAdmin() || $user->isEditor() || $user->isUser();
     }
 
     /**
