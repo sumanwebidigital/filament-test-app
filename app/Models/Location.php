@@ -9,7 +9,24 @@ class Location extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        
+    protected $fillable = [
+        'name',
+        'latitude',
+        'longitude',
     ];
+
+    public function orders(){
+
+        // $a = $this->hasMany(Order::class, 'location_id');
+        // dd($a->get());
+
+        return $this->hasMany(Order::class, 'location_id');
+    }
+
+    public function users(){
+        $a = $this->hasMany(User::class, 'id');
+        dd($a->get());
+        
+        return $this->hasMany(User::class, 'id');
+    }
 }

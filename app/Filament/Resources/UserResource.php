@@ -59,6 +59,10 @@ class UserResource extends Resource
                     ->relationship('permissions', 'name')
                     ->searchable()
                     ->preload(),
+                Select::make('location_id')
+                    ->relationship('location', 'name')
+                    ->searchable()
+                    ->preload(),
                 ColorPicker::make('color'),
             ]);
     }
@@ -77,6 +81,7 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('location.name')->searchable(),
                 TextColumn::make('roles.name')->label('Roles')->badge(),
                 TextColumn::make('permissions.name')->label('Permissions')->badge(),
                 // TextColumn::make('role')

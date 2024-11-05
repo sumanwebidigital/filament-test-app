@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LocationResource\Pages;
 use App\Filament\Resources\LocationResource\RelationManagers;
+use App\Filament\Resources\OrderResource\RelationManagers\OrderRelationManager;
 use App\Models\Location;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -70,7 +71,7 @@ class LocationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrderRelationManager::class,
         ];
     }
 

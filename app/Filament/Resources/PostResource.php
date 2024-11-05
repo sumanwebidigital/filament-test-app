@@ -24,7 +24,6 @@ use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -64,10 +63,6 @@ class PostResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
-                        // Select::make('location_id')
-                        //     ->relationship('location', 'name')
-                        //     ->searchable()
-                        //     ->preload(),
                         ColorPicker::make('color')->required(),
                     ]),
                     Tab::make('Content')
@@ -161,11 +156,6 @@ class PostResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
-                // TextColumn::make('location.name')
-                //     ->label('Location')
-                //     ->sortable()
-                //     ->searchable()
-                //     ->toggleable(),
                 TagsColumn::make('tags')
                     ->toggleable(),
                 ToggleColumn::make('published')
